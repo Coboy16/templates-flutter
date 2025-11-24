@@ -4,17 +4,29 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/core.dart';
 
 void main() {
-  // Configurar bridge de JavaScript
-  JsBridge.setup();
-
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      debugPrint('[MAIN] Post-frame: Inicializando JS Bridge');
+      JsBridge.initContainer(ref.container);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final router = ref.watch(appRouterProvider);
 
     return MaterialApp.router(

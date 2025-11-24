@@ -27,7 +27,7 @@ class SponsorsPage extends StatelessWidget {
               Icon(Icons.mic, size: 80, color: Colors.blue[700]),
               const SizedBox(height: 24),
               Text(
-                'Speakers',
+                'Sponsors',
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
