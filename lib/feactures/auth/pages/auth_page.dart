@@ -12,7 +12,7 @@ class AuthPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authProvider);
 
-    print('[AUTH] Renderizando template: ${authState.currentTemplate}');
+    debugPrint('[AUTH] Renderizando template: ${authState.currentTemplate}');
 
     return Scaffold(
       backgroundColor: Colors.transparent,

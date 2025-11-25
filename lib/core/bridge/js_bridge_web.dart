@@ -82,6 +82,7 @@ class JsBridge {
               bool showApple,
               bool showTerms,
               String? backgroundImage,
+              String? logoImage,
             ) {
               debugPrint('[AUTH-BRIDGE] JS llamó updateTemplate3Settings');
 
@@ -98,6 +99,7 @@ class JsBridge {
                       showApple: showApple,
                       showTerms: showTerms,
                       backgroundImage: backgroundImage,
+                      logoImage: logoImage,
                     );
                 debugPrint(
                   '   Google: $showGoogle, Apple: $showApple, Terms: $showTerms',

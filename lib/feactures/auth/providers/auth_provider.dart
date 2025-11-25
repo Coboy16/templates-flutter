@@ -10,7 +10,7 @@ class AuthNotifier extends _$AuthNotifier {
   @override
   AuthState build() {
     debugPrint('[AUTH] Inicializando AuthNotifier');
-    return const AuthState();
+    return const AuthState(currentTemplate: 'template1');
   }
 
   void setTemplate(String template) {
@@ -23,6 +23,7 @@ class AuthNotifier extends _$AuthNotifier {
     required bool showApple,
     required bool showTerms,
     String? backgroundImage,
+    String? logoImage,
   }) {
     debugPrint('[AUTH] Actualizando Template 3 settings');
     state = state.copyWith(
@@ -30,6 +31,7 @@ class AuthNotifier extends _$AuthNotifier {
       showApple: showApple,
       showTerms: showTerms,
       backgroundImage: backgroundImage,
+      logoImage: logoImage,
     );
   }
 }

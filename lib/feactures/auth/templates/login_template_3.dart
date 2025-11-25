@@ -1,222 +1,81 @@
 import 'package:flutter/material.dart';
+
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LoginTemplate3 extends StatefulWidget {
+import '../providers/providers.dart';
+import '../widgets/widgets.dart';
+
+class LoginTemplate3 extends ConsumerStatefulWidget {
   const LoginTemplate3({super.key});
 
   @override
-  State<LoginTemplate3> createState() => LoginTemplate3State();
+  ConsumerState<LoginTemplate3> createState() => _LoginTemplate3State();
 }
 
-class LoginTemplate3State extends State<LoginTemplate3> {
-  bool _termsAccepted = false;
-  bool _isLoading = false;
-
-  // Opciones controlables desde React
-  bool _showGoogle = true;
-  bool _showApple = true;
-  bool _showTerms = true;
-  String? _backgroundImage;
-
-  void _handleGoogleSignIn() {
-    print('🔐 [TEMPLATE3] Google Sign-In clicked');
-    // Aquí conectarías con tu BLoC de Google Auth
-  }
-
-  void _handleAppleSignIn() {
-    print('🔐 [TEMPLATE3] Apple Sign-In clicked');
-    // Aquí conectarías con tu BLoC de Apple Auth
-  }
-
-  void _showTermsDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          'Terms and Conditions',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-        ),
-        content: Text(
-          'Aquí irían los términos y condiciones de tu aplicación.',
-          style: GoogleFonts.poppins(fontSize: 14),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              'Close',
-              style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Método para actualizar las opciones desde React
-  void updateTemplate3Options({
-    bool? showGoogle,
-    bool? showApple,
-    bool? showTerms,
-    String? backgroundImage,
-  }) {
-    setState(() {
-      if (showGoogle != null) _showGoogle = showGoogle;
-      if (showApple != null) _showApple = showApple;
-      if (showTerms != null) _showTerms = showTerms;
-      if (backgroundImage != null) _backgroundImage = backgroundImage;
-    });
-    print(
-      '🔐 [TEMPLATE3] Opciones actualizadas: G=$_showGoogle, A=$_showApple, T=$_showTerms, IMG=${_backgroundImage != null}',
-    );
-  }
+class _LoginTemplate3State extends ConsumerState<LoginTemplate3> {
+  bool _termsAccepted = true;
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authProvider);
     final screenSize = MediaQuery.of(context).size;
-    final screenHeight = screenSize.height;
-    final screenWidth = screenSize.width;
+
+    _logRenderInfo(authState);
 
     return Scaffold(
       body: Stack(
         children: [
-          // Background
-          _buildBackground(screenSize),
-
-          // Main content
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Spacer(flex: 2),
-
-                  // Logo placeholder (superior)
-                  Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: Colors.white.withOpacity(0.3),
-                        width: 2,
-                      ),
-                    ),
-                    child: const Icon(
-                      Icons.flutter_dash,
-                      color: Colors.white,
-                      size: 40,
-                    ),
-                  ),
-
-                  const Spacer(flex: 3),
-
-                  // Logo central (más grande)
-                  Container(
-                    width: screenWidth * 0.5,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(24),
-                      border: Border.all(
-                        color: Colors.white.withOpacity(0.3),
-                        width: 2,
-                      ),
-                    ),
-                    child: const Icon(
-                      Icons.flutter_dash,
-                      color: Colors.white,
-                      size: 60,
-                    ),
-                  ),
-
-                  SizedBox(height: screenHeight * 0.08),
-
-                  // Google Sign-In Button (condicional)
-                  if (_showGoogle) ...[
-                    _buildGoogleButton(),
-                    const SizedBox(height: 16),
-                  ],
-
-                  // Apple Sign-In Button (condicional)
-                  if (_showApple) ...[
-                    _buildAppleButton(),
-                    const SizedBox(height: 20),
-                  ],
-
-                  // Mensaje si no hay botones visibles
-                  if (!_showGoogle && !_showApple)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Text(
-                        'Activa al menos un método de login',
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          color: Colors.white.withOpacity(0.7),
-                        ),
-                      ),
-                    ),
-
-                  // Loading indicator
-                  if (_isLoading)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2.0,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                Colors.white,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Text(
-                            'Connecting...',
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                  const SizedBox(height: 24),
-
-                  // Terms and conditions checkbox (condicional)
-                  if (_showTerms) _buildTermsCheckbox(),
-
-                  const Spacer(flex: 2),
-
-                  // Version text
-                  Text(
-                    'v1.0.0',
-                    style: GoogleFonts.poppins(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white.withOpacity(0.6),
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-                ],
-              ),
-            ),
+          _TemplateBackground(
+            screenSize: screenSize,
+            backgroundImage: authState.backgroundImage,
+          ),
+          _TemplateContent(
+            screenSize: screenSize,
+            authState: authState,
+            termsAccepted: _termsAccepted,
+            onTermsChanged: (value) => setState(() => _termsAccepted = value),
+            onGoogleSignIn: _handleGoogleSignIn,
+            onAppleSignIn: _handleAppleSignIn,
+            logoImage: authState.logoImage,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildBackground(Size screenSize) {
+  void _logRenderInfo(authState) {
+    debugPrint(
+      '[TEMPLATE3] Renderizando - Google: ${authState.showGoogle}, '
+      'Apple: ${authState.showApple}, Terms: ${authState.showTerms}',
+    );
+  }
+
+  void _handleGoogleSignIn() {
+    debugPrint('[TEMPLATE3] Google Sign-In clicked');
+  }
+
+  void _handleAppleSignIn() {
+    debugPrint('[TEMPLATE3] Apple Sign-In clicked');
+  }
+}
+
+class _TemplateBackground extends StatelessWidget {
+  final Size screenSize;
+  final String? backgroundImage;
+
+  const _TemplateBackground({required this.screenSize, this.backgroundImage});
+
+  static const String _defaultBackgroundSvg = 'assets/svg/fonsss.svg';
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(children: [_buildBaseGradient(), _buildBackgroundImage()]);
+  }
+
+  Widget _buildBaseGradient() {
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -224,149 +83,217 @@ class LoginTemplate3State extends State<LoginTemplate3> {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: _backgroundImage == null
+          colors: backgroundImage == null
               ? const [Color(0xFF2800C8), Color(0xFF1a0080), Color(0xFF0d0040)]
               : [Colors.black.withOpacity(0.6), Colors.black.withOpacity(0.4)],
         ),
       ),
-      child: _backgroundImage != null
-          ? Stack(
-              children: [
-                // Imagen de fondo
-                Positioned.fill(
-                  child: Image.network(
-                    _backgroundImage!,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      print('❌ Error cargando imagen: $error');
-                      return Container(color: const Color(0xFF2800C8));
-                    },
-                  ),
-                ),
-                // Overlay oscuro
-                Positioned.fill(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.black.withOpacity(0.4),
-                          Colors.black.withOpacity(0.6),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+    );
+  }
+
+  Widget _buildBackgroundImage() {
+    if (backgroundImage != null && backgroundImage!.isNotEmpty) {
+      return _buildNetworkImage();
+    }
+    return _buildDefaultSvgBackground();
+  }
+
+  Widget _buildNetworkImage() {
+    return Positioned.fill(
+      child: Stack(
+        children: [
+          Image.network(
+            backgroundImage!,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              debugPrint('[TEMPLATE3] Error cargando imagen: $error');
+              return _buildDefaultSvgBackground();
+            },
+          ),
+          _buildDarkOverlay(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDefaultSvgBackground() {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 0),
+      child: SvgPicture.asset(
+        _defaultBackgroundSvg,
+        height: screenSize.height,
+        width: screenSize.width,
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  Widget _buildDarkOverlay() {
+    return Positioned.fill(
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.black.withOpacity(0.4),
+              Colors.black.withOpacity(0.6),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TemplateContent extends StatelessWidget {
+  final Size screenSize;
+  final dynamic authState;
+  final bool termsAccepted;
+  final ValueChanged<bool> onTermsChanged;
+  final VoidCallback onGoogleSignIn;
+  final VoidCallback onAppleSignIn;
+  final String? logoImage;
+
+  const _TemplateContent({
+    required this.screenSize,
+    required this.authState,
+    required this.termsAccepted,
+    required this.onTermsChanged,
+    required this.onGoogleSignIn,
+    required this.onAppleSignIn,
+    this.logoImage,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Spacer(flex: 2),
+            _buildCentralLogo(),
+            SizedBox(height: screenSize.height * 0.03),
+            _buildSignInButtons(context),
+            const SizedBox(height: 24),
+            if (authState.showTerms) _buildTermsCheckbox(context),
+            const Spacer(flex: 2),
+            _buildVersionText(),
+            const SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCentralLogo() {
+    const defaultLogoSvg = 'assets/svg/logo_center.svg';
+
+    return SizedBox(
+      width: screenSize.width * 0.79,
+      height: 100,
+      child: (logoImage != null && logoImage!.isNotEmpty)
+          ? Image.network(
+              logoImage!,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) {
+                debugPrint('[TEMPLATE3] Error cargando logo: $error');
+                return SvgPicture.asset(defaultLogoSvg, fit: BoxFit.contain);
+              },
             )
-          : CustomPaint(painter: BackgroundPatternPainter()),
+          : SvgPicture.asset(defaultLogoSvg, fit: BoxFit.contain),
     );
   }
 
-  Widget _buildGoogleButton() {
-    final isEnabled = !_showTerms || _termsAccepted;
+  Widget _buildSignInButtons(BuildContext context) {
+    final showGoogle = authState.showGoogle;
+    final showApple = authState.showApple;
+    final showTerms = authState.showTerms;
 
-    return SizedBox(
-      width: double.infinity,
-      height: 54,
-      child: ElevatedButton.icon(
-        onPressed: isEnabled ? _handleGoogleSignIn : null,
-        icon: const Icon(
-          Icons.g_mobiledata,
-          size: 28,
-          color: Color(0xFF2800C8),
-        ),
-        label: Text(
-          'Sign in with Google',
-          style: GoogleFonts.poppins(
-            fontSize: 15,
-            fontWeight: FontWeight.w600,
-            letterSpacing: 0.5,
-            color: const Color(0xFF2800C8),
-          ),
-        ),
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.disabled)) {
-              return Colors.white.withOpacity(0.5);
-            }
-            return Colors.white;
-          }),
-          foregroundColor: MaterialStateProperty.all(const Color(0xFF2800C8)),
-          elevation: MaterialStateProperty.all(0),
-          shape: MaterialStateProperty.all(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          ),
+    if (!showGoogle && !showApple) {
+      return _buildNoButtonsMessage();
+    }
+
+    return Column(
+      children: [
+        if (showGoogle) ...[
+          _buildGoogleButton(showTerms),
+          const SizedBox(height: 16),
+        ],
+        if (showApple) ...[
+          _buildAppleButton(showTerms),
+          const SizedBox(height: 20),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildNoButtonsMessage() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Text(
+        'Activa al menos un método de login',
+        style: GoogleFonts.poppins(
+          fontSize: 14,
+          color: Colors.white.withOpacity(0.7),
         ),
       ),
     );
   }
 
-  Widget _buildAppleButton() {
-    final isEnabled = !_showTerms || _termsAccepted;
+  Widget _buildGoogleButton(bool showTerms) {
+    final isEnabled = !showTerms || termsAccepted;
 
-    return SizedBox(
-      width: double.infinity,
-      height: 54,
-      child: ElevatedButton.icon(
-        onPressed: isEnabled ? _handleAppleSignIn : null,
-        icon: const Icon(Icons.apple, size: 24, color: Color(0xFF2800C8)),
-        label: Text(
-          'Sign in with Apple',
-          style: GoogleFonts.poppins(
-            fontSize: 15,
-            fontWeight: FontWeight.w600,
-            letterSpacing: 0.5,
-            color: const Color(0xFF2800C8),
-          ),
-        ),
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.disabled)) {
-              return Colors.white.withOpacity(0.5);
-            }
-            return Colors.white;
-          }),
-          foregroundColor: MaterialStateProperty.all(const Color(0xFF2800C8)),
-          elevation: MaterialStateProperty.all(0),
-          shape: MaterialStateProperty.all(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTermsCheckbox() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      child: SocialSignInButton(
+        provider: 'google',
+        isLoading: false,
+        onPressed: isEnabled ? onGoogleSignIn : null,
+      ),
+    );
+  }
+
+  Widget _buildAppleButton(bool showTerms) {
+    final isEnabled = !showTerms || termsAccepted;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      child: SocialSignInButton(
+        provider: 'apple',
+        isLoading: false,
+        onPressed: isEnabled ? onAppleSignIn : null,
+      ),
+    );
+  }
+
+  Widget _buildTermsCheckbox(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            width: 24,
-            height: 24,
+            width: 24.w,
+            height: 24.w,
             child: Checkbox(
-              value: _termsAccepted,
-              onChanged: (value) {
-                setState(() {
-                  _termsAccepted = value ?? false;
-                });
-              },
+              value: termsAccepted,
+              onChanged: (value) => onTermsChanged(value ?? false),
               activeColor: Colors.white,
               checkColor: const Color(0xFF2800C8),
-              side: const BorderSide(color: Colors.white, width: 2),
+              side: BorderSide(color: Colors.white, width: 2.r),
             ),
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: 8.w),
           Flexible(
             child: GestureDetector(
-              onTap: _showTermsDialog,
+              onTap: () => _showTermsBottomSheet(context),
               child: RichText(
                 text: TextSpan(
                   style: GoogleFonts.poppins(
-                    fontSize: 13,
+                    fontSize: 13.sp,
                     color: Colors.white.withOpacity(0.9),
                   ),
                   children: [
@@ -374,7 +301,7 @@ class LoginTemplate3State extends State<LoginTemplate3> {
                     TextSpan(
                       text: 'Terms and Conditions',
                       style: GoogleFonts.poppins(
-                        fontSize: 13,
+                        fontSize: 13.sp,
                         color: Colors.white,
                         decoration: TextDecoration.underline,
                         fontWeight: FontWeight.w600,
@@ -389,25 +316,30 @@ class LoginTemplate3State extends State<LoginTemplate3> {
       ),
     );
   }
-}
 
-/// Custom painter para el patrón de fondo decorativo
-class BackgroundPatternPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.white.withOpacity(0.05)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.5;
-
-    // Dibujar círculos decorativos
-    canvas.drawCircle(Offset(size.width * 0.2, size.height * 0.3), 100, paint);
-
-    canvas.drawCircle(Offset(size.width * 0.8, size.height * 0.7), 80, paint);
-
-    canvas.drawCircle(Offset(size.width * 0.5, size.height * 0.15), 60, paint);
+  void _showTermsBottomSheet(BuildContext context) {
+    showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      isDismissible: true,
+      enableDrag: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => const TermsBottomSheet(),
+    ).then((accepted) {
+      if (accepted == true) {
+        onTermsChanged(true);
+      }
+    });
   }
 
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  Widget _buildVersionText() {
+    return Text(
+      'v1.0.0',
+      style: GoogleFonts.poppins(
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+        color: Colors.white.withOpacity(0.6),
+      ),
+    );
+  }
 }

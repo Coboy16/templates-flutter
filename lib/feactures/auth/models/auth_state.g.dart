@@ -7,11 +7,12 @@ part of 'auth_state.dart';
 // **************************************************************************
 
 _AuthState _$AuthStateFromJson(Map<String, dynamic> json) => _AuthState(
-  currentTemplate: json['currentTemplate'] as String? ?? 'template1',
+  currentTemplate: json['currentTemplate'] as String? ?? 'template3',
   showGoogle: json['showGoogle'] as bool? ?? true,
   showApple: json['showApple'] as bool? ?? true,
   showTerms: json['showTerms'] as bool? ?? true,
   backgroundImage: json['backgroundImage'] as String?,
+  logoImage: json['logoImage'] as String?,
 );
 
 Map<String, dynamic> _$AuthStateToJson(_AuthState instance) =>
@@ -21,4 +22,5 @@ Map<String, dynamic> _$AuthStateToJson(_AuthState instance) =>
       'showApple': instance.showApple,
       'showTerms': instance.showTerms,
       'backgroundImage': instance.backgroundImage,
+      'logoImage': instance.logoImage,
     };

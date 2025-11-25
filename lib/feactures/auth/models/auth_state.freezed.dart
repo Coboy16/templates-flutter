@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AuthState {
 
- String get currentTemplate; bool get showGoogle; bool get showApple; bool get showTerms; String? get backgroundImage;
+ String get currentTemplate; bool get showGoogle; bool get showApple; bool get showTerms; String? get backgroundImage; String? get logoImage;
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $AuthStateCopyWith<AuthState> get copyWith => _$AuthStateCopyWithImpl<AuthState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthState&&(identical(other.currentTemplate, currentTemplate) || other.currentTemplate == currentTemplate)&&(identical(other.showGoogle, showGoogle) || other.showGoogle == showGoogle)&&(identical(other.showApple, showApple) || other.showApple == showApple)&&(identical(other.showTerms, showTerms) || other.showTerms == showTerms)&&(identical(other.backgroundImage, backgroundImage) || other.backgroundImage == backgroundImage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthState&&(identical(other.currentTemplate, currentTemplate) || other.currentTemplate == currentTemplate)&&(identical(other.showGoogle, showGoogle) || other.showGoogle == showGoogle)&&(identical(other.showApple, showApple) || other.showApple == showApple)&&(identical(other.showTerms, showTerms) || other.showTerms == showTerms)&&(identical(other.backgroundImage, backgroundImage) || other.backgroundImage == backgroundImage)&&(identical(other.logoImage, logoImage) || other.logoImage == logoImage));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,currentTemplate,showGoogle,showApple,showTerms,backgroundImage);
+int get hashCode => Object.hash(runtimeType,currentTemplate,showGoogle,showApple,showTerms,backgroundImage,logoImage);
 
 @override
 String toString() {
-  return 'AuthState(currentTemplate: $currentTemplate, showGoogle: $showGoogle, showApple: $showApple, showTerms: $showTerms, backgroundImage: $backgroundImage)';
+  return 'AuthState(currentTemplate: $currentTemplate, showGoogle: $showGoogle, showApple: $showApple, showTerms: $showTerms, backgroundImage: $backgroundImage, logoImage: $logoImage)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $AuthStateCopyWith<$Res>  {
   factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) _then) = _$AuthStateCopyWithImpl;
 @useResult
 $Res call({
- String currentTemplate, bool showGoogle, bool showApple, bool showTerms, String? backgroundImage
+ String currentTemplate, bool showGoogle, bool showApple, bool showTerms, String? backgroundImage, String? logoImage
 });
 
 
@@ -65,13 +65,14 @@ class _$AuthStateCopyWithImpl<$Res>
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? currentTemplate = null,Object? showGoogle = null,Object? showApple = null,Object? showTerms = null,Object? backgroundImage = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? currentTemplate = null,Object? showGoogle = null,Object? showApple = null,Object? showTerms = null,Object? backgroundImage = freezed,Object? logoImage = freezed,}) {
   return _then(_self.copyWith(
 currentTemplate: null == currentTemplate ? _self.currentTemplate : currentTemplate // ignore: cast_nullable_to_non_nullable
 as String,showGoogle: null == showGoogle ? _self.showGoogle : showGoogle // ignore: cast_nullable_to_non_nullable
 as bool,showApple: null == showApple ? _self.showApple : showApple // ignore: cast_nullable_to_non_nullable
 as bool,showTerms: null == showTerms ? _self.showTerms : showTerms // ignore: cast_nullable_to_non_nullable
 as bool,backgroundImage: freezed == backgroundImage ? _self.backgroundImage : backgroundImage // ignore: cast_nullable_to_non_nullable
+as String?,logoImage: freezed == logoImage ? _self.logoImage : logoImage // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -157,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String currentTemplate,  bool showGoogle,  bool showApple,  bool showTerms,  String? backgroundImage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String currentTemplate,  bool showGoogle,  bool showApple,  bool showTerms,  String? backgroundImage,  String? logoImage)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthState() when $default != null:
-return $default(_that.currentTemplate,_that.showGoogle,_that.showApple,_that.showTerms,_that.backgroundImage);case _:
+return $default(_that.currentTemplate,_that.showGoogle,_that.showApple,_that.showTerms,_that.backgroundImage,_that.logoImage);case _:
   return orElse();
 
 }
@@ -178,10 +179,10 @@ return $default(_that.currentTemplate,_that.showGoogle,_that.showApple,_that.sho
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String currentTemplate,  bool showGoogle,  bool showApple,  bool showTerms,  String? backgroundImage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String currentTemplate,  bool showGoogle,  bool showApple,  bool showTerms,  String? backgroundImage,  String? logoImage)  $default,) {final _that = this;
 switch (_that) {
 case _AuthState():
-return $default(_that.currentTemplate,_that.showGoogle,_that.showApple,_that.showTerms,_that.backgroundImage);case _:
+return $default(_that.currentTemplate,_that.showGoogle,_that.showApple,_that.showTerms,_that.backgroundImage,_that.logoImage);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +199,10 @@ return $default(_that.currentTemplate,_that.showGoogle,_that.showApple,_that.sho
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String currentTemplate,  bool showGoogle,  bool showApple,  bool showTerms,  String? backgroundImage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String currentTemplate,  bool showGoogle,  bool showApple,  bool showTerms,  String? backgroundImage,  String? logoImage)?  $default,) {final _that = this;
 switch (_that) {
 case _AuthState() when $default != null:
-return $default(_that.currentTemplate,_that.showGoogle,_that.showApple,_that.showTerms,_that.backgroundImage);case _:
+return $default(_that.currentTemplate,_that.showGoogle,_that.showApple,_that.showTerms,_that.backgroundImage,_that.logoImage);case _:
   return null;
 
 }
@@ -213,7 +214,7 @@ return $default(_that.currentTemplate,_that.showGoogle,_that.showApple,_that.sho
 @JsonSerializable()
 
 class _AuthState implements AuthState {
-  const _AuthState({this.currentTemplate = 'template1', this.showGoogle = true, this.showApple = true, this.showTerms = true, this.backgroundImage});
+  const _AuthState({this.currentTemplate = 'template3', this.showGoogle = true, this.showApple = true, this.showTerms = true, this.backgroundImage, this.logoImage});
   factory _AuthState.fromJson(Map<String, dynamic> json) => _$AuthStateFromJson(json);
 
 @override@JsonKey() final  String currentTemplate;
@@ -221,6 +222,7 @@ class _AuthState implements AuthState {
 @override@JsonKey() final  bool showApple;
 @override@JsonKey() final  bool showTerms;
 @override final  String? backgroundImage;
+@override final  String? logoImage;
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
@@ -235,16 +237,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthState&&(identical(other.currentTemplate, currentTemplate) || other.currentTemplate == currentTemplate)&&(identical(other.showGoogle, showGoogle) || other.showGoogle == showGoogle)&&(identical(other.showApple, showApple) || other.showApple == showApple)&&(identical(other.showTerms, showTerms) || other.showTerms == showTerms)&&(identical(other.backgroundImage, backgroundImage) || other.backgroundImage == backgroundImage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthState&&(identical(other.currentTemplate, currentTemplate) || other.currentTemplate == currentTemplate)&&(identical(other.showGoogle, showGoogle) || other.showGoogle == showGoogle)&&(identical(other.showApple, showApple) || other.showApple == showApple)&&(identical(other.showTerms, showTerms) || other.showTerms == showTerms)&&(identical(other.backgroundImage, backgroundImage) || other.backgroundImage == backgroundImage)&&(identical(other.logoImage, logoImage) || other.logoImage == logoImage));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,currentTemplate,showGoogle,showApple,showTerms,backgroundImage);
+int get hashCode => Object.hash(runtimeType,currentTemplate,showGoogle,showApple,showTerms,backgroundImage,logoImage);
 
 @override
 String toString() {
-  return 'AuthState(currentTemplate: $currentTemplate, showGoogle: $showGoogle, showApple: $showApple, showTerms: $showTerms, backgroundImage: $backgroundImage)';
+  return 'AuthState(currentTemplate: $currentTemplate, showGoogle: $showGoogle, showApple: $showApple, showTerms: $showTerms, backgroundImage: $backgroundImage, logoImage: $logoImage)';
 }
 
 
@@ -255,7 +257,7 @@ abstract mixin class _$AuthStateCopyWith<$Res> implements $AuthStateCopyWith<$Re
   factory _$AuthStateCopyWith(_AuthState value, $Res Function(_AuthState) _then) = __$AuthStateCopyWithImpl;
 @override @useResult
 $Res call({
- String currentTemplate, bool showGoogle, bool showApple, bool showTerms, String? backgroundImage
+ String currentTemplate, bool showGoogle, bool showApple, bool showTerms, String? backgroundImage, String? logoImage
 });
 
 
@@ -272,13 +274,14 @@ class __$AuthStateCopyWithImpl<$Res>
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? currentTemplate = null,Object? showGoogle = null,Object? showApple = null,Object? showTerms = null,Object? backgroundImage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? currentTemplate = null,Object? showGoogle = null,Object? showApple = null,Object? showTerms = null,Object? backgroundImage = freezed,Object? logoImage = freezed,}) {
   return _then(_AuthState(
 currentTemplate: null == currentTemplate ? _self.currentTemplate : currentTemplate // ignore: cast_nullable_to_non_nullable
 as String,showGoogle: null == showGoogle ? _self.showGoogle : showGoogle // ignore: cast_nullable_to_non_nullable
 as bool,showApple: null == showApple ? _self.showApple : showApple // ignore: cast_nullable_to_non_nullable
 as bool,showTerms: null == showTerms ? _self.showTerms : showTerms // ignore: cast_nullable_to_non_nullable
 as bool,backgroundImage: freezed == backgroundImage ? _self.backgroundImage : backgroundImage // ignore: cast_nullable_to_non_nullable
+as String?,logoImage: freezed == logoImage ? _self.logoImage : logoImage // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

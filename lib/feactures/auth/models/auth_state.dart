@@ -11,6 +11,7 @@ abstract class AuthState with _$AuthState {
     @Default(true) bool showApple,
     @Default(true) bool showTerms,
     String? backgroundImage,
+    String? logoImage,
   }) = _AuthState;
 
   factory AuthState.fromJson(Map<String, dynamic> json) =>
